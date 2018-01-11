@@ -1,17 +1,112 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Home</ion-title>
+    <ion-title>Weather</ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <h2>Welcome to Ionic!</h2>
-  <p>
-    This starter project comes with simple tabs-based layout for apps
-    that are going to primarily use a Tabbed UI.
-  </p>
-  <p>
-    Take a look at the <code>src/pages/</code> directory to add or change tabs,
-    update any existing page or create new pages.
-  </p>
+<ion-content padding class="home">
+  <ion-grid *ngIf="weather">
+    <ion-row>
+      <ion-col>
+        <h2 class="location">{{weather.name}}, {{weather.sys.country}}</h2>
+        <div class="icon"><img src={{imgWeather}}/></div>
+        <h4 class="desc">{{weather.weather[0].description | uppercase}}</h4>
+        <h1 class="temp">{{weather.main.temp}} &deg;C</h1>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-list>
+          <ion-item>
+            <strong>Pressure:</strong> {{weather.main.pressure/1.33322387415 |number : '1.2-2'}} mmHg
+          </ion-item>
+          <ion-item>
+            <strong>Humidity:</strong> {{weather.main.humidity}} %
+          </ion-item>
+          <ion-item>
+            <strong>Sunrise: </strong>{{weather.sys.sunrise* 1000 | date: "h:mm a"}}
+          </ion-item>
+          <ion-item>
+            <strong>Sunset: </strong>{{weather.sys.sunset* 1000 | date: "h:mm a"}}
+          </ion-item>
+          <ion-item>
+            <strong>Wind Speed: </strong>{{weather.wind.speed}} m/s
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <accordion [title]="titleNextWeek" *ngIf="WeatherForecastNextWeek">
+    <accordion [title]="dayForecast.dt * 1000 | date" *ngFor="let dayForecast of WeatherForecastNextWeek">
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-list>
+              <ion-item>
+                <strong>Weather:</strong> {{dayForecast.weather[0].description}}
+              </ion-item>
+              <ion-item>
+                <strong>Temperature:</strong> {{dayForecast.temp.day | number:'1.0-1'}} &deg;C
+              </ion-item>
+              <ion-item>
+                <strong>Temp. Max:</strong> {{dayForecast.temp.max | number:'1.0-1'}} &deg;C
+              </ion-item>
+              <ion-item>
+                <strong>Temp. Min:</strong> {{dayForecast.temp.min | number:'1.0-1'}} &deg;C
+              </ion-item>
+              <ion-item>
+                <strong>Temp. Morn.:</strong> {{dayForecast.temp.morn | number:'1.0-1'}} &deg;C
+              </ion-item>
+
+              <ion-item>
+                <strong>Temp. Eve.:</strong> {{dayForecast.temp.eve | number:'1.0-1'}} &deg;C
+              </ion-item>
+
+              <ion-item>
+                <strong>Temp. Night:</strong> {{dayForecast.temp.night | number:'1.0-1'}} &deg;C
+              </ion-item>
+              <ion-item>
+                <strong>Pressure:</strong> {{dayForecast.pressure/1.33322387415 |number : '1.2-2'}} mmHg
+              </ion-item>
+              <ion-item>
+                <strong>Humidity:</strong> {{dayForecast.humidity}} %
+              </ion-item>
+              <ion-item>
+                <strong>Wind Speed: </strong>{{dayForecast.speed}} m/s
+              </ion-item>
+            </ion-list>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </accordion>
+  </accordion>
+
+  <accordion [title]="titleNext" *ngIf="WeatherForecast">
+    <accordion [title]="forecast.dt_txt" *ngFor="let forecast of WeatherForecast">
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-list>
+              <ion-item>
+                <strong>Weather:</strong> {{forecast.weather[0].description}}
+              </ion-item>
+              <ion-item>
+                <strong>Temperature:</strong> {{forecast.main.temp | number:'1.0-1'}} &deg;C
+              </ion-item>
+              <ion-item>
+                <strong>Pressure:</strong> {{forecast.main.pressure/1.33322387415 |number : '1.2-2'}} mmHg
+              </ion-item>
+              <ion-item>
+                <strong>Humidity:</strong> {{forecast.main.humidity}} %
+              </ion-item>
+              <ion-item>
+                <strong>Wind Speed: </strong>{{forecast.wind.speed}} m/s
+              </ion-item>
+            </ion-list>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </accordion>
+  </accordion>
+
 </ion-content>
